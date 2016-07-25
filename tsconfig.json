@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "outDir": "dist",
+        "rootDir": "src",
+        "sourceMap": true,
+        "noImplicitAny": true,
+        "target": "es6",
+        "allowJs": false,
+        "allowSyntheticDefaultImports": true,
+        "jsx": "react",
+        "watch": true
+    },
+    "exclude": [
+        "node_modules"
+    ],
+    "compileOnSave": true
+}
