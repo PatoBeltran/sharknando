@@ -1,0 +1,9 @@
+{
+  "presets": [
+    "react-native",
+    "es2016",
+    "react"
+  ],
+  "plugins": [],
+  "sourceMaps": true
+}

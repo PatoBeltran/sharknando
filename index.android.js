@@ -3,7 +3,7 @@ import {
   AppRegistry
 } from 'react-native';
 
-import {SharknandoEntrypoint} from "./dist/components/entrypoint";
+import SharknandoEntrypoint from "./src/components/entrypoint";
 
 class sharknando extends Component {
   render() {

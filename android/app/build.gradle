@@ -137,3 +137,5 @@ task copyDownloadableDepsToLibs(type: Copy) {
   from configurations.compile
   into 'libs'
 }
+
+compile project(':react-native-camera')

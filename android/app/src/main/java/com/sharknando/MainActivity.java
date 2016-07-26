@@ -1,6 +1,7 @@
 package com.sharknando;
 
 import com.facebook.react.ReactActivity;
+import com.lwansbrough.RCTCamera.*;
 
 public class MainActivity extends ReactActivity {
 
@@ -11,5 +12,11 @@ public class MainActivity extends ReactActivity {
     @Override
     protected String getMainComponentName() {
         return "sharknando";
+    }
+
+    protected List<ReactPackage> getPackages() {
+        return Arrays.<ReactPackage>asList(
+            new MainReactPackage(),
+            new new RCTCameraPackage());
     }
 }
