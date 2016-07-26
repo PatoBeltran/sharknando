@@ -5,11 +5,15 @@ import {
     StyleSheet,
     Text,
     TouchableHighlight,
-    View
+    View,
+    StatusBar,
+    Image
 } from 'react-native';
 
 import Camera from 'react-native-camera';
 import CameraRollPicker from 'react-native-camera-roll-picker';
+import Log from "../helpers/log"
+var { width, height } = Dimensions.get('window');
 
 class SharknandoEntrypoint extends Component {
     componentDidMount() {
@@ -17,8 +21,11 @@ class SharknandoEntrypoint extends Component {
 
     takePicture() {
         this.camera.capture()
-        .then((data) => console.log(data))
-        .catch(err => console.error(err));
+            .then((data) => {
+                Log.logMessage(data)
+            })
+            .catch(err =>
+                Log.logError(err));
     }
 
     getSelectedImages(images, current) {
@@ -28,16 +35,22 @@ class SharknandoEntrypoint extends Component {
     render() {
         return (
             <View style={ styles.container }>
+                <StatusBar
+                    barStyle="light-content"
+                    />
                 <Camera
-                    ref={(cam) => { this.camera = cam;}}
+                    ref={(cam) => { this.camera = cam; } }
                     style={styles.preview}
                     aspect={Camera.constants.Aspect.fill}>
-                    <Text style={styles.capture} onPress={this.takePicture.bind(this)}>[CAPTURE]</Text>
+                    <View style={styles.footer}>
+                        <View style={styles.capture} onPress={this.takePicture.bind(this) }>
+                            <View style={styles.innerCapture}></View>
+                        </View>
+                    </View>
                 </Camera>
-                <CameraRollPicker
-                    callback={this.getSelectedImages}
-                    maximum={1}
-                    groupTypes="All" />
+                <View style={ styles.header }>
+                    <Image style={styles.rotateCamera} source={require('../../images/shot-flip-icon.png')} />
+                </View>
             </View>
         );
     }
@@ -47,20 +60,51 @@ const styles = StyleSheet.create({
     container: {
         flex: 1
     },
+    header: {
+        position: 'absolute',
+        left: 0,
+        top: 0,
+        backgroundColor: 'rgba(0,0,0,.25)',
+        width: width,
+        height: 70
+    },
     preview: {
         flex: 1,
-        justifyContent: 'flex-end',
+        height: height,
+        width: width
+    },
+    footer: {
+        position: 'absolute',
+        left: 0,
+        bottom: 0,
+        width: width,
         alignItems: 'center',
-        height: Dimensions.get('window').height,
-        width: Dimensions.get('window').width
+        flexDirection: 'column'
+    },
+    rotateCamera: {
+        marginTop: 25,
+        marginRight: 25,
+        flexDirection: 'row',
+        alignSelf: 'flex-end'
     },
     capture: {
         flex: 0,
+        backgroundColor: 'rgba(0,0,0,0.6)',
+        borderRadius: 40,
+        padding: 7,
+        width: 80,
+        height: 80,
+        alignItems: 'center',
+        marginBottom: 15
+    },
+    innerCapture: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'center',
         backgroundColor: '#fff',
-        borderRadius: 5,
-        color: '#000',
-        padding: 10,
-        margin: 40
+        borderRadius: 40,
+        width: 65,
+        height: 65
     }
 });
 
