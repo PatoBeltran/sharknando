@@ -13,12 +13,12 @@ import {
 import Camera from 'react-native-camera';
 import CameraRollPicker from 'react-native-camera-roll-picker';
 import Log from "../helpers/log"
+import GalleryButton from './galleryButton';
+import RotateCamera from './rotateCamera';
+
 var { width, height } = Dimensions.get('window');
 
 class SharknandoEntrypoint extends Component {
-    componentDidMount() {
-    }
-
     takePicture() {
         this.camera.capture()
             .then((data) => {
@@ -32,24 +32,26 @@ class SharknandoEntrypoint extends Component {
 
     }
 
+    rotateCamera() {
+
+    }
+
     render() {
         return (
             <View style={ styles.container }>
-                <StatusBar
-                    barStyle="light-content"
-                    />
                 <Camera
                     ref={(cam) => { this.camera = cam; } }
-                    style={styles.preview}
-                    aspect={Camera.constants.Aspect.fill}>
-                    <View style={styles.footer}>
-                        <View style={styles.capture} onPress={this.takePicture.bind(this) }>
-                            <View style={styles.innerCapture}></View>
-                        </View>
-                    </View>
-                </Camera>
+                    style={styles.cameraPreview}
+                    aspect={Camera.constants.Aspect.fill} />
                 <View style={ styles.header }>
-                    <Image style={styles.rotateCamera} source={require('../../images/shot-flip-icon.png')} />
+                    <StatusBar barStyle="light-content" />
+                    <RotateCamera callback={this.rotateCamera} />
+                </View>
+                <View style={styles.footer}>
+                    <GalleryButton />
+                    <View style={styles.capture} onPress={this.takePicture.bind(this) }>
+                        <View style={styles.innerCapture}></View>
+                    </View>
                 </View>
             </View>
         );
@@ -58,7 +60,16 @@ class SharknandoEntrypoint extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1
+        flex: 1,
+        flexDirection: 'column',
+    },
+    cameraPreview: {
+        flex: 1,
+        height: height,
+        width: width,
+        position: 'absolute',
+        left: 0,
+        top: 0,
     },
     header: {
         position: 'absolute',
@@ -66,26 +77,18 @@ const styles = StyleSheet.create({
         top: 0,
         backgroundColor: 'rgba(0,0,0,.25)',
         width: width,
-        height: 70
-    },
-    preview: {
-        flex: 1,
-        height: height,
-        width: width
+        height: 65,
+        flexDirection:'row'
     },
     footer: {
         position: 'absolute',
         left: 0,
         bottom: 0,
         width: width,
+        height: 100,
         alignItems: 'center',
-        flexDirection: 'column'
-    },
-    rotateCamera: {
-        marginTop: 25,
-        marginRight: 25,
-        flexDirection: 'row',
-        alignSelf: 'flex-end'
+        flexDirection: 'column',
+        backgroundColor: 'green',
     },
     capture: {
         flex: 0,

@@ -78145,13 +78145,13 @@ var _reactNative=require(43 /* react-native */);
 
 var _reactNativeCamera=require(633 /* react-native-camera */);var _reactNativeCamera2=babelHelpers.interopRequireDefault(_reactNativeCamera);
 var _reactNativeCameraRollPicker=require(634 /* react-native-camera-roll-picker */);var _reactNativeCameraRollPicker2=babelHelpers.interopRequireDefault(_reactNativeCameraRollPicker);
-var _log=require(639 /* ../helpers/log */);var _log2=babelHelpers.interopRequireDefault(_log);var _Dimensions$get=
+var _log=require(639 /* ../helpers/log */);var _log2=babelHelpers.interopRequireDefault(_log);
+var _galleryButton=require(643 /* ./galleryButton */);var _galleryButton2=babelHelpers.interopRequireDefault(_galleryButton);
+var _rotateCamera=require(644 /* ./rotateCamera */);var _rotateCamera2=babelHelpers.interopRequireDefault(_rotateCamera);var _Dimensions$get=
+
 _reactNative.Dimensions.get('window');var width=_Dimensions$get.width;var height=_Dimensions$get.height;var
 
-SharknandoEntrypoint=function(_Component){babelHelpers.inherits(SharknandoEntrypoint,_Component);function SharknandoEntrypoint(){babelHelpers.classCallCheck(this,SharknandoEntrypoint);return babelHelpers.possibleConstructorReturn(this,Object.getPrototypeOf(SharknandoEntrypoint).apply(this,arguments));}babelHelpers.createClass(SharknandoEntrypoint,[{key:'componentDidMount',value:function componentDidMount()
-{
-}},{key:'takePicture',value:function takePicture()
-
+SharknandoEntrypoint=function(_Component){babelHelpers.inherits(SharknandoEntrypoint,_Component);function SharknandoEntrypoint(){babelHelpers.classCallCheck(this,SharknandoEntrypoint);return babelHelpers.possibleConstructorReturn(this,Object.getPrototypeOf(SharknandoEntrypoint).apply(this,arguments));}babelHelpers.createClass(SharknandoEntrypoint,[{key:'takePicture',value:function takePicture()
 {
 this.camera.capture().
 then(function(data){
@@ -78163,26 +78163,28 @@ _log2.default.logError(err));});
 
 images,current){
 
+}},{key:'rotateCamera',value:function rotateCamera()
+
+{
+
 }},{key:'render',value:function render()
 
 {var _this2=this;
 return(
 _react2.default.createElement(_reactNative.View,{style:styles.container},
-_react2.default.createElement(_reactNative.StatusBar,{
-barStyle:'light-content'}),
-
 _react2.default.createElement(_reactNativeCamera2.default,{
 ref:function ref(cam){_this2.camera=cam;},
-style:styles.preview,
-aspect:_reactNativeCamera2.default.constants.Aspect.fill},
-_react2.default.createElement(_reactNative.View,{style:styles.footer},
-_react2.default.createElement(_reactNative.View,{style:styles.capture,onPress:this.takePicture.bind(this)},
-_react2.default.createElement(_reactNative.View,{style:styles.innerCapture})))),
-
-
-
+style:styles.cameraPreview,
+aspect:_reactNativeCamera2.default.constants.Aspect.fill}),
 _react2.default.createElement(_reactNative.View,{style:styles.header},
-_react2.default.createElement(_reactNative.Image,{style:styles.rotateCamera,source:require(640 /* ../../images/shot-flip-icon.png */)}))));
+_react2.default.createElement(_reactNative.StatusBar,{barStyle:'light-content'}),
+_react2.default.createElement(_rotateCamera2.default,{callback:this.rotateCamera})),
+
+_react2.default.createElement(_reactNative.View,{style:styles.footer},
+_react2.default.createElement(_galleryButton2.default,null),
+_react2.default.createElement(_reactNative.View,{style:styles.capture,onPress:this.takePicture.bind(this)},
+_react2.default.createElement(_reactNative.View,{style:styles.innerCapture})))));
+
 
 
 
@@ -78191,7 +78193,16 @@ _react2.default.createElement(_reactNative.Image,{style:styles.rotateCamera,sour
 
 var styles=_reactNative.StyleSheet.create({
 container:{
-flex:1},
+flex:1,
+flexDirection:'column'},
+
+cameraPreview:{
+flex:1,
+height:height,
+width:width,
+position:'absolute',
+left:0,
+top:0},
 
 header:{
 position:'absolute',
@@ -78199,26 +78210,18 @@ left:0,
 top:0,
 backgroundColor:'rgba(0,0,0,.25)',
 width:width,
-height:70},
-
-preview:{
-flex:1,
-height:height,
-width:width},
+height:65,
+flexDirection:'row'},
 
 footer:{
 position:'absolute',
 left:0,
 bottom:0,
 width:width,
+height:100,
 alignItems:'center',
-flexDirection:'column'},
-
-rotateCamera:{
-marginTop:25,
-marginRight:25,
-flexDirection:'row',
-alignSelf:'flex-end'},
+flexDirection:'column',
+backgroundColor:'green'},
 
 capture:{
 flex:0,
@@ -79076,6 +79079,127 @@ message){
 process.stderr.write("[Error] "+message+"\n");
 }}]);return Log;}();
 }, "sharknando/src/helpers/log.js");
+__d(643 /* sharknando/src/components/galleryButton.js */, function(global, require, module, exports) {var _react=require(12 /* react */);var _react2=babelHelpers.interopRequireDefault(_react);
+var _reactNative=require(43 /* react-native */);var
+
+
+
+
+
+
+GalleryButton=function(_Component){babelHelpers.inherits(GalleryButton,_Component);function GalleryButton(){babelHelpers.classCallCheck(this,GalleryButton);return babelHelpers.possibleConstructorReturn(this,Object.getPrototypeOf(GalleryButton).apply(this,arguments));}babelHelpers.createClass(GalleryButton,[{key:'render',value:function render()
+{
+return(
+_react2.default.createElement(_reactNative.View,{style:styles.container},
+_react2.default.createElement(_reactNative.View,{style:styles.hexagon},
+_react2.default.createElement(_reactNative.View,{style:styles.hexagonInner}),
+_react2.default.createElement(_reactNative.View,{style:styles.hexagonBefore}),
+_react2.default.createElement(_reactNative.View,{style:styles.hexagonAfter})),
+
+_react2.default.createElement(_reactNative.Image,{style:styles.cameraRollInner,source:require(642 /* ../../images/camera-roll.png */)})));
+
+
+}}]);return GalleryButton;}(_react.Component);
+
+
+var styles=_reactNative.StyleSheet.create({
+container:{
+flex:1},
+
+cameraRollInner:{},
+
+
+hexagon:{
+width:50,
+height:27.5},
+
+hexagonInner:{
+width:50,
+height:27.5,
+backgroundColor:'rgba(255,255,255,0.6)'},
+
+hexagonAfter:{
+position:'absolute',
+bottom:-12.5,
+left:0,
+width:0,
+height:0,
+borderStyle:'solid',
+borderLeftWidth:25,
+borderLeftColor:'transparent',
+borderRightWidth:25,
+borderRightColor:'transparent',
+borderTopWidth:12.5,
+borderTopColor:'rgba(255,255,255,0.6)'},
+
+hexagonBefore:{
+position:'absolute',
+top:-12.5,
+left:0,
+width:0,
+height:0,
+borderStyle:'solid',
+borderLeftWidth:25,
+borderLeftColor:'transparent',
+borderRightWidth:25,
+borderRightColor:'transparent',
+borderBottomWidth:12.5,
+borderBottomColor:'rgba(255,255,255,0.6)'}});
+
+
+
+module.exports=GalleryButton;
+}, "sharknando/src/components/galleryButton.js");
+__d(642 /* sharknando/images/camera-roll.png */, function(global, require, module, exports) {module.exports = require(161 /* react-native/Libraries/Image/AssetRegistry */).registerAsset({"__packager_asset":true,"fileSystemLocation":"/Users/patobeltran/workspace/mobile/sharknando/images","httpServerLocation":"/assets/images","width":38,"height":40,"scales":[1,2,3],"files":["/Users/patobeltran/workspace/mobile/sharknando/images/camera-roll.png","/Users/patobeltran/workspace/mobile/sharknando/images/camera-roll@2x.png","/Users/patobeltran/workspace/mobile/sharknando/images/camera-roll@3x.png"],"hash":"4b2ad0d5f6d8e69ca56fb7b6dce716f3","name":"camera-roll","type":"png"});
+}, "sharknando/images/camera-roll.png");
+__d(644 /* sharknando/src/components/rotateCamera.js */, function(global, require, module, exports) {var _react=require(12 /* react */);var _react2=babelHelpers.interopRequireDefault(_react);
+var _reactNative=require(43 /* react-native */);
+
+
+
+
+
+
+var _config=require(645 /* ../globals/config */);var
+
+RotateCamera=function(_Component){babelHelpers.inherits(RotateCamera,_Component);function RotateCamera(){babelHelpers.classCallCheck(this,RotateCamera);return babelHelpers.possibleConstructorReturn(this,Object.getPrototypeOf(RotateCamera).apply(this,arguments));}babelHelpers.createClass(RotateCamera,[{key:'render',value:function render()
+{
+return(
+_react2.default.createElement(_reactNative.View,{style:styles.container},
+_react2.default.createElement(_reactNative.Image,{style:styles.inner,source:require(640 /* ../../images/shot-flip-icon.png */)})));
+
+
+}}]);return RotateCamera;}(_react.Component);
+
+
+var styles=_reactNative.StyleSheet.create({
+container:{
+height:_config.Style.headerHeight,
+width:75,
+position:'absolute',
+top:0,
+right:0},
+
+inner:{
+marginTop:25,
+marginRight:25,
+marginLeft:25}});
+
+
+
+module.exports=RotateCamera;
+}, "sharknando/src/components/rotateCamera.js");
+__d(645 /* sharknando/src/globals/config.js */, function(global, require, module, exports) {var config={
+get Style(){
+return{
+"headerHeight":65,
+"footerHeight":100};
+
+}};
+
+
+module.exports=config;
+}, "sharknando/src/globals/config.js");
 __d(640 /* sharknando/images/shot-flip-icon.png */, function(global, require, module, exports) {module.exports = require(161 /* react-native/Libraries/Image/AssetRegistry */).registerAsset({"__packager_asset":true,"fileSystemLocation":"/Users/patobeltran/workspace/mobile/sharknando/images","httpServerLocation":"/assets/images","width":31,"height":27,"scales":[1,2,3],"files":["/Users/patobeltran/workspace/mobile/sharknando/images/shot-flip-icon.png","/Users/patobeltran/workspace/mobile/sharknando/images/shot-flip-icon@2x.png","/Users/patobeltran/workspace/mobile/sharknando/images/shot-flip-icon@3x.png"],"hash":"621625a06bc8a4b56f7242b08cacfd03","name":"shot-flip-icon","type":"png"});
 }, "sharknando/images/shot-flip-icon.png");
 ;require(187);
