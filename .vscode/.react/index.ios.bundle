@@ -78147,7 +78147,8 @@ var _reactNativeCamera=require(633 /* react-native-camera */);var _reactNativeCa
 var _reactNativeCameraRollPicker=require(634 /* react-native-camera-roll-picker */);var _reactNativeCameraRollPicker2=babelHelpers.interopRequireDefault(_reactNativeCameraRollPicker);
 var _log=require(639 /* ../helpers/log */);var _log2=babelHelpers.interopRequireDefault(_log);
 var _galleryButton=require(643 /* ./galleryButton */);var _galleryButton2=babelHelpers.interopRequireDefault(_galleryButton);
-var _rotateCamera=require(644 /* ./rotateCamera */);var _rotateCamera2=babelHelpers.interopRequireDefault(_rotateCamera);var _Dimensions$get=
+var _rotateCamera=require(644 /* ./rotateCamera */);var _rotateCamera2=babelHelpers.interopRequireDefault(_rotateCamera);
+var _config=require(645 /* ../globals/config */);var _Dimensions$get=
 
 _reactNative.Dimensions.get('window');var width=_Dimensions$get.width;var height=_Dimensions$get.height;var
 
@@ -78181,9 +78182,15 @@ _react2.default.createElement(_reactNative.StatusBar,{barStyle:'light-content'})
 _react2.default.createElement(_rotateCamera2.default,{callback:this.rotateCamera})),
 
 _react2.default.createElement(_reactNative.View,{style:styles.footer},
-_react2.default.createElement(_galleryButton2.default,null),
+_react2.default.createElement(_reactNative.View,{style:styles.gallery},
+_react2.default.createElement(_galleryButton2.default,null)),
+
+_react2.default.createElement(_reactNative.View,{style:styles.shutter},
 _react2.default.createElement(_reactNative.View,{style:styles.capture,onPress:this.takePicture.bind(this)},
-_react2.default.createElement(_reactNative.View,{style:styles.innerCapture})))));
+_react2.default.createElement(_reactNative.View,{style:styles.innerCapture}))),
+
+
+_react2.default.createElement(_reactNative.View,{style:styles.more}))));
 
 
 
@@ -78220,21 +78227,38 @@ bottom:0,
 width:width,
 height:100,
 alignItems:'center',
-flexDirection:'column',
-backgroundColor:'green'},
+flexDirection:'row'},
+
+gallery:{
+flex:1,
+height:_config.Style.footerHeight,
+alignItems:'center',
+flexDirection:'row',
+justifyContent:'center'},
+
+shutter:{
+flex:1,
+height:_config.Style.footerHeight,
+alignItems:'center',
+flexDirection:'row',
+justifyContent:'center'},
+
+more:{
+flex:1,
+height:_config.Style.footerHeight,
+alignItems:'center',
+flexDirection:'row',
+justifyContent:'center'},
 
 capture:{
-flex:0,
 backgroundColor:'rgba(0,0,0,0.6)',
 borderRadius:40,
 padding:7,
 width:80,
 height:80,
-alignItems:'center',
-marginBottom:15},
+alignItems:'center'},
 
 innerCapture:{
-flex:1,
 flexDirection:'row',
 justifyContent:'center',
 backgroundColor:'#fff',
@@ -79080,12 +79104,14 @@ process.stderr.write("[Error] "+message+"\n");
 }}]);return Log;}();
 }, "sharknando/src/helpers/log.js");
 __d(643 /* sharknando/src/components/galleryButton.js */, function(global, require, module, exports) {var _react=require(12 /* react */);var _react2=babelHelpers.interopRequireDefault(_react);
-var _reactNative=require(43 /* react-native */);var
+var _reactNative=require(43 /* react-native */);
 
 
 
 
 
+
+var _config=require(645 /* ../globals/config */);var
 
 GalleryButton=function(_Component){babelHelpers.inherits(GalleryButton,_Component);function GalleryButton(){babelHelpers.classCallCheck(this,GalleryButton);return babelHelpers.possibleConstructorReturn(this,Object.getPrototypeOf(GalleryButton).apply(this,arguments));}babelHelpers.createClass(GalleryButton,[{key:'render',value:function render()
 {
@@ -79104,10 +79130,17 @@ _react2.default.createElement(_reactNative.Image,{style:styles.cameraRollInner,s
 
 var styles=_reactNative.StyleSheet.create({
 container:{
-flex:1},
+height:_config.Style.footerHeight,
+flex:1,
+alignItems:'center',
+flexDirection:'row',
+justifyContent:'center',
+backgroundColor:'red'},
 
-cameraRollInner:{},
-
+cameraRollInner:{
+position:'absolute',
+top:30,
+left:35},
 
 hexagon:{
 width:50,
@@ -79150,6 +79183,17 @@ borderBottomColor:'rgba(255,255,255,0.6)'}});
 
 module.exports=GalleryButton;
 }, "sharknando/src/components/galleryButton.js");
+__d(645 /* sharknando/src/globals/config.js */, function(global, require, module, exports) {var config={
+get Style(){
+return{
+"headerHeight":65,
+"footerHeight":100};
+
+}};
+
+
+module.exports=config;
+}, "sharknando/src/globals/config.js");
 __d(642 /* sharknando/images/camera-roll.png */, function(global, require, module, exports) {module.exports = require(161 /* react-native/Libraries/Image/AssetRegistry */).registerAsset({"__packager_asset":true,"fileSystemLocation":"/Users/patobeltran/workspace/mobile/sharknando/images","httpServerLocation":"/assets/images","width":38,"height":40,"scales":[1,2,3],"files":["/Users/patobeltran/workspace/mobile/sharknando/images/camera-roll.png","/Users/patobeltran/workspace/mobile/sharknando/images/camera-roll@2x.png","/Users/patobeltran/workspace/mobile/sharknando/images/camera-roll@3x.png"],"hash":"4b2ad0d5f6d8e69ca56fb7b6dce716f3","name":"camera-roll","type":"png"});
 }, "sharknando/images/camera-roll.png");
 __d(644 /* sharknando/src/components/rotateCamera.js */, function(global, require, module, exports) {var _react=require(12 /* react */);var _react2=babelHelpers.interopRequireDefault(_react);
@@ -79189,17 +79233,6 @@ marginLeft:25}});
 
 module.exports=RotateCamera;
 }, "sharknando/src/components/rotateCamera.js");
-__d(645 /* sharknando/src/globals/config.js */, function(global, require, module, exports) {var config={
-get Style(){
-return{
-"headerHeight":65,
-"footerHeight":100};
-
-}};
-
-
-module.exports=config;
-}, "sharknando/src/globals/config.js");
 __d(640 /* sharknando/images/shot-flip-icon.png */, function(global, require, module, exports) {module.exports = require(161 /* react-native/Libraries/Image/AssetRegistry */).registerAsset({"__packager_asset":true,"fileSystemLocation":"/Users/patobeltran/workspace/mobile/sharknando/images","httpServerLocation":"/assets/images","width":31,"height":27,"scales":[1,2,3],"files":["/Users/patobeltran/workspace/mobile/sharknando/images/shot-flip-icon.png","/Users/patobeltran/workspace/mobile/sharknando/images/shot-flip-icon@2x.png","/Users/patobeltran/workspace/mobile/sharknando/images/shot-flip-icon@3x.png"],"hash":"621625a06bc8a4b56f7242b08cacfd03","name":"shot-flip-icon","type":"png"});
 }, "sharknando/images/shot-flip-icon.png");
 ;require(187);

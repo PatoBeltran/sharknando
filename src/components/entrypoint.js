@@ -15,6 +15,7 @@ import CameraRollPicker from 'react-native-camera-roll-picker';
 import Log from "../helpers/log"
 import GalleryButton from './galleryButton';
 import RotateCamera from './rotateCamera';
+import {Style} from '../globals/config';
 
 var { width, height } = Dimensions.get('window');
 
@@ -48,9 +49,15 @@ class SharknandoEntrypoint extends Component {
                     <RotateCamera callback={this.rotateCamera} />
                 </View>
                 <View style={styles.footer}>
-                    <GalleryButton />
-                    <View style={styles.capture} onPress={this.takePicture.bind(this) }>
-                        <View style={styles.innerCapture}></View>
+                    <View style={styles.gallery}>
+                        <GalleryButton />
+                    </View>
+                    <View style={styles.shutter}>
+                        <View style={styles.capture} onPress={this.takePicture.bind(this) }>
+                            <View style={styles.innerCapture}></View>
+                        </View>
+                    </View>
+                    <View style={styles.more}>
                     </View>
                 </View>
             </View>
@@ -78,7 +85,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(0,0,0,.25)',
         width: width,
         height: 65,
-        flexDirection:'row'
+        flexDirection: 'row'
     },
     footer: {
         position: 'absolute',
@@ -87,21 +94,38 @@ const styles = StyleSheet.create({
         width: width,
         height: 100,
         alignItems: 'center',
-        flexDirection: 'column',
-        backgroundColor: 'green',
+        flexDirection: 'row',
+    },
+    gallery: {
+        flex: 1,
+        height: Style.footerHeight,
+        alignItems: 'center',
+        flexDirection: 'row',
+        justifyContent: 'center'
+    },
+    shutter: {
+        flex: 1,
+        height: Style.footerHeight,
+        alignItems: 'center',
+        flexDirection: 'row',
+        justifyContent: 'center'
+    },
+    more: {
+        flex: 1,
+        height: Style.footerHeight,
+        alignItems: 'center',
+        flexDirection: 'row',
+        justifyContent: 'center'
     },
     capture: {
-        flex: 0,
         backgroundColor: 'rgba(0,0,0,0.6)',
         borderRadius: 40,
         padding: 7,
         width: 80,
         height: 80,
         alignItems: 'center',
-        marginBottom: 15
     },
     innerCapture: {
-        flex: 1,
         flexDirection: 'row',
         justifyContent: 'center',
         backgroundColor: '#fff',

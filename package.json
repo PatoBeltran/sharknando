@@ -10,5 +10,11 @@
     "react-native": "^0.30.0",
     "react-native-camera": "github:lwansbrough/react-native-camera",
     "react-native-camera-roll-picker": "^1.1.6"
+  },
+  "devDependencies": {
+    "babel-plugin-transform-react-jsx": "^6.8.0",
+    "babel-polyfill": "^6.9.1",
+    "babel-preset-es2016": "^6.11.3",
+    "babel-preset-react": "^6.11.1"
   }
 }

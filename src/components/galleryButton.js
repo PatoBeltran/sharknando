@@ -6,6 +6,8 @@ import {
     StyleSheet
 } from 'react-native';
 
+import {Style} from '../globals/config';
+
 class GalleryButton extends Component {
     render() {
         return (
@@ -23,19 +25,25 @@ class GalleryButton extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1
+        height: Style.footerHeight,
+        flex: 1,
+        alignItems: 'center',
+        flexDirection: 'row',
+        justifyContent: 'center'
     },
     cameraRollInner: {
-
+        alignSelf: 'center',
+        marginLeft: -44
     },
     hexagon: {
+        alignSelf: 'center',
         width: 50,
-        height: 27.5
+        height: 27.5,
     },
     hexagonInner: {
         width: 50,
         height: 27.5,
-        backgroundColor: 'rgba(255,255,255,0.6)'
+        backgroundColor: 'rgba(0,0,0,0.6)'
     },
     hexagonAfter: {
         position: 'absolute',
@@ -49,7 +57,7 @@ const styles = StyleSheet.create({
         borderRightWidth: 25,
         borderRightColor: 'transparent',
         borderTopWidth: 12.5,
-        borderTopColor: 'rgba(255,255,255,0.6)'
+        borderTopColor: 'rgba(0,0,0,0.6)'
     },
     hexagonBefore: {
         position: 'absolute',
@@ -63,7 +71,7 @@ const styles = StyleSheet.create({
         borderRightWidth: 25,
         borderRightColor: 'transparent',
         borderBottomWidth: 12.5,
-        borderBottomColor: 'rgba(255,255,255,0.6)'
+        borderBottomColor: 'rgba(0,0,0,0.6)'
     }
 });
 
