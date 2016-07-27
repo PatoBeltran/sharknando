@@ -78166,7 +78166,8 @@ function SharknandoEntrypoint(props){babelHelpers.classCallCheck(this,Sharknando
 props));
 _this.state={
 hasImageSelected:false,
-imageSelected:""};return _this;
+imageSelected:"",
+cameraType:_reactNativeCamera2.default.constants.Type.back};return _this;
 
 }babelHelpers.createClass(SharknandoEntrypoint,[{key:'takePicture',value:function takePicture()
 
@@ -78180,6 +78181,9 @@ _log2.default.logError(err));});
 }},{key:'rotateCamera',value:function rotateCamera()
 
 {
+var newState=this.state;
+newState.cameraType=newState.cameraType===_reactNativeCamera2.default.constants.Type.back?_reactNativeCamera2.default.constants.Type.front:_reactNativeCamera2.default.constants.Type.back;
+this.setState(newState);
 }},{key:'showCameraRoll',value:function showCameraRoll()
 
 {var _this2=this;
@@ -78192,7 +78196,6 @@ _log2.default.logError('ImagePicker Error: ',response.error);
 }else
 {
 var source={uri:'data:image/jpeg;base64,'+response.data,isStatic:true};
-_log2.default.logMessage(source);
 _this2.setState({
 imageSelected:source,
 hasImageSelected:true});
@@ -78202,7 +78205,6 @@ hasImageSelected:true});
 }},{key:'imageSubmitted',value:function imageSubmitted()
 
 {
-
 }},{key:'imageCanceled',value:function imageCanceled()
 
 {
@@ -78223,10 +78225,11 @@ _react2.default.createElement(_reactNative.View,{style:styles.container},
 _react2.default.createElement(_reactNativeCamera2.default,{
 ref:function ref(cam){_this3.camera=cam;},
 style:styles.cameraPreview,
-aspect:_reactNativeCamera2.default.constants.Aspect.fill}),
+aspect:_reactNativeCamera2.default.constants.Aspect.fill,
+type:this.state.cameraType}),
 _react2.default.createElement(_reactNative.View,{style:styles.header},
 _react2.default.createElement(_reactNative.StatusBar,{barStyle:'light-content'}),
-_react2.default.createElement(_rotateCamera2.default,{callback:this.rotateCamera})),
+_react2.default.createElement(_rotateCamera2.default,{callback:this.rotateCamera.bind(this)})),
 
 _react2.default.createElement(_reactNative.View,{style:styles.footer},
 _react2.default.createElement(_reactNative.View,{style:styles.gallery},
@@ -78682,10 +78685,13 @@ var _reactNative=require(43 /* react-native */);
 
 var _config=require(645 /* ../globals/config */);var
 
-RotateCamera=function(_Component){babelHelpers.inherits(RotateCamera,_Component);function RotateCamera(){babelHelpers.classCallCheck(this,RotateCamera);return babelHelpers.possibleConstructorReturn(this,Object.getPrototypeOf(RotateCamera).apply(this,arguments));}babelHelpers.createClass(RotateCamera,[{key:'render',value:function render()
+RotateCamera=function(_Component){babelHelpers.inherits(RotateCamera,_Component);function RotateCamera(){babelHelpers.classCallCheck(this,RotateCamera);return babelHelpers.possibleConstructorReturn(this,Object.getPrototypeOf(RotateCamera).apply(this,arguments));}babelHelpers.createClass(RotateCamera,[{key:'rotateCam',value:function rotateCam()
+{
+return this.props.callback();
+}},{key:'render',value:function render()
 {
 return(
-_react2.default.createElement(_reactNative.View,{style:styles.container},
+_react2.default.createElement(_reactNative.TouchableHighlight,{style:styles.container,onPress:this.rotateCam.bind(this)},
 _react2.default.createElement(_reactNative.Image,{style:styles.inner,source:require(640 /* ../../images/shot-flip-icon.png */)})));
 
 
@@ -78781,7 +78787,6 @@ flexDirection:'row'},
 cancel:{
 height:_config.Style.headerHeight,
 width:75,
-backgroundColor:'red',
 position:'absolute',
 left:0,
 top:0},
@@ -78789,7 +78794,6 @@ top:0},
 check:{
 height:_config.Style.headerHeight,
 width:75,
-backgroundColor:'blue',
 position:'absolute',
 right:0,
 top:0},

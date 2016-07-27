@@ -33,7 +33,8 @@ class SharknandoEntrypoint extends Component {
         super(props);
         this.state = {
             hasImageSelected: false,
-            imageSelected: ""
+            imageSelected: "",
+            cameraType: Camera.constants.Type.back
         };
     }
 
@@ -47,6 +48,9 @@ class SharknandoEntrypoint extends Component {
     }
 
     rotateCamera() {
+        var newState = this.state;
+        newState.cameraType = newState.cameraType === Camera.constants.Type.back ? Camera.constants.Type.front : Camera.constants.Type.back;
+        this.setState(newState);
     }
 
     showCameraRoll() {
@@ -59,7 +63,6 @@ class SharknandoEntrypoint extends Component {
             }
             else {
                 var source = { uri: 'data:image/jpeg;base64,' + response.data, isStatic: true };
-                Log.logMessage(source);
                 this.setState({
                     imageSelected: source,
                     hasImageSelected: true
@@ -69,7 +72,6 @@ class SharknandoEntrypoint extends Component {
     }
 
     imageSubmitted() {
-
     }
 
     imageCanceled() {
@@ -90,10 +92,11 @@ class SharknandoEntrypoint extends Component {
                 <Camera
                     ref={(cam) => { this.camera = cam; } }
                     style={styles.cameraPreview}
-                    aspect={Camera.constants.Aspect.fill} />
+                    aspect={Camera.constants.Aspect.fill}
+                    type={this.state.cameraType} />
                 <View style={ styles.header }>
                     <StatusBar barStyle="light-content" />
-                    <RotateCamera callback={this.rotateCamera} />
+                    <RotateCamera callback={this.rotateCamera.bind(this)} />
                 </View>
                 <View style={styles.footer}>
                     <View style={styles.gallery}>

@@ -9,11 +9,14 @@ import {
 import {Style} from '../globals/config';
 
 class RotateCamera extends Component {
+    rotateCam() {
+        return this.props.callback();
+    }
     render() {
         return (
-            <View style={styles.container}>
+            <TouchableHighlight style={styles.container} onPress={this.rotateCam.bind(this)}>
                 <Image style={styles.inner} source={require('../../images/shot-flip-icon.png') } />
-            </View>
+            </TouchableHighlight>
         );
     }
 }
