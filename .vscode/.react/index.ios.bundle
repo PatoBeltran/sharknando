@@ -78142,12 +78142,12 @@ var _reactNative=require(43 /* react-native */);
 
 
 
-
 var _reactNativeCamera=require(633 /* react-native-camera */);var _reactNativeCamera2=babelHelpers.interopRequireDefault(_reactNativeCamera);
 var _reactNativeImagePicker=require(646 /* react-native-image-picker */);var _reactNativeImagePicker2=babelHelpers.interopRequireDefault(_reactNativeImagePicker);
 var _log=require(639 /* ../helpers/log */);var _log2=babelHelpers.interopRequireDefault(_log);
 var _galleryButton=require(643 /* ./galleryButton */);var _galleryButton2=babelHelpers.interopRequireDefault(_galleryButton);
 var _rotateCamera=require(644 /* ./rotateCamera */);var _rotateCamera2=babelHelpers.interopRequireDefault(_rotateCamera);
+var _imageChoosen=require(647 /* ./imageChoosen */);var _imageChoosen2=babelHelpers.interopRequireDefault(_imageChoosen);
 var _config=require(645 /* ../globals/config */);var _Dimensions$get=
 
 _reactNative.Dimensions.get('window');var width=_Dimensions$get.width;var height=_Dimensions$get.height;
@@ -78164,7 +78164,10 @@ skipBackup:true}};var
 SharknandoEntrypoint=function(_Component){babelHelpers.inherits(SharknandoEntrypoint,_Component);
 function SharknandoEntrypoint(props){babelHelpers.classCallCheck(this,SharknandoEntrypoint);var _this=babelHelpers.possibleConstructorReturn(this,Object.getPrototypeOf(SharknandoEntrypoint).call(this,
 props));
-_this.state={showCameraRoll:false};return _this;
+_this.state={
+hasImageSelected:false,
+imageSelected:""};return _this;
+
 }babelHelpers.createClass(SharknandoEntrypoint,[{key:'takePicture',value:function takePicture()
 
 {
@@ -78174,37 +78177,51 @@ _log2.default.logMessage(data);
 }).
 catch(function(err){return(
 _log2.default.logError(err));});
-}},{key:'getSelectedImages',value:function getSelectedImages(
-
-images,current){
-
 }},{key:'rotateCamera',value:function rotateCamera()
 
 {
-
 }},{key:'showCameraRoll',value:function showCameraRoll()
+
+{var _this2=this;
+_reactNativeImagePicker2.default.launchImageLibrary(options,function(response){
+if(response.didCancel){
+_log2.default.logError('User cancelled photo picker');
+}else
+if(response.error){
+_log2.default.logError('ImagePicker Error: ',response.error);
+}else
+{
+var source={uri:'data:image/jpeg;base64,'+response.data,isStatic:true};
+_log2.default.logMessage(source);
+_this2.setState({
+imageSelected:source,
+hasImageSelected:true});
+
+}
+});
+}},{key:'imageSubmitted',value:function imageSubmitted()
 
 {
 
-_reactNativeImagePicker2.default.launchImageLibrary(options,function(response){
+}},{key:'imageCanceled',value:function imageCanceled()
 
-});
+{
+this.setState({
+imageSelected:"",
+hasImageSelected:false});
+
 }},{key:'render',value:function render()
 
-{var _this2=this;
-var mainScreen=this.state.showCameraRoll?
-_react2.default.createElement(CameraRollPicker,{
-groupTypes:'All',
-maximum:1,
-selected:this.state.selected,
-assetType:'Photos',
-imagesPerRow:3,
-imageMargin:5,
-callback:this.getSelectedImages.bind(this)}):
+{var _this3=this;
+var mainScreen=this.state.hasImageSelected?
+_react2.default.createElement(_imageChoosen2.default,{
+image:this.state.imageSelected,
+onCancel:this.imageCanceled.bind(this),
+onSubmit:this.imageSubmitted.bind(this)}):
 
 _react2.default.createElement(_reactNative.View,{style:styles.container},
 _react2.default.createElement(_reactNativeCamera2.default,{
-ref:function ref(cam){_this2.camera=cam;},
+ref:function ref(cam){_this3.camera=cam;},
 style:styles.cameraPreview,
 aspect:_reactNativeCamera2.default.constants.Aspect.fill}),
 _react2.default.createElement(_reactNative.View,{style:styles.header},
@@ -78247,7 +78264,7 @@ left:0,
 top:0,
 backgroundColor:'rgba(0,0,0,.25)',
 width:width,
-height:65,
+height:_config.Style.headerHeight,
 flexDirection:'row'},
 
 footer:{
@@ -78255,7 +78272,7 @@ position:'absolute',
 left:0,
 bottom:0,
 width:width,
-height:100,
+height:_config.Style.footerHeight,
 alignItems:'center',
 flexDirection:'row'},
 
@@ -78550,13 +78567,16 @@ options={};
 return ImagePickerManager.showImagePicker(babelHelpers.extends({},DEFAULT_OPTIONS,options),callback);
 }});
 }, "react-native-image-picker/index.js");
-__d(639 /* sharknando/src/helpers/log.js */, function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});var Log=exports.Log=function(){function Log(){babelHelpers.classCallCheck(this,Log);}babelHelpers.createClass(Log,null,[{key:"logMessage",value:function logMessage(
+__d(639 /* sharknando/src/helpers/log.js */, function(global, require, module, exports) {var Log=function(){function Log(){babelHelpers.classCallCheck(this,Log);}babelHelpers.createClass(Log,null,[{key:"logMessage",value:function logMessage(
 message){
-process.stdout.write("[Shark] "+message+"\n");
+console.log("[Shark] "+message);
 }},{key:"logError",value:function logError(
 message){
-process.stderr.write("[Error] "+message+"\n");
+console.error("[Error] "+message);
 }}]);return Log;}();
+;
+
+module.exports=Log;
 }, "sharknando/src/helpers/log.js");
 __d(643 /* sharknando/src/components/galleryButton.js */, function(global, require, module, exports) {var _react=require(12 /* react */);var _react2=babelHelpers.interopRequireDefault(_react);
 var _reactNative=require(43 /* react-native */);
@@ -78691,6 +78711,107 @@ module.exports=RotateCamera;
 }, "sharknando/src/components/rotateCamera.js");
 __d(640 /* sharknando/images/shot-flip-icon.png */, function(global, require, module, exports) {module.exports = require(161 /* react-native/Libraries/Image/AssetRegistry */).registerAsset({"__packager_asset":true,"fileSystemLocation":"/Users/patobeltran/workspace/mobile/sharknando/images","httpServerLocation":"/assets/images","width":31,"height":27,"scales":[1,2,3],"files":["/Users/patobeltran/workspace/mobile/sharknando/images/shot-flip-icon.png","/Users/patobeltran/workspace/mobile/sharknando/images/shot-flip-icon@2x.png","/Users/patobeltran/workspace/mobile/sharknando/images/shot-flip-icon@3x.png"],"hash":"621625a06bc8a4b56f7242b08cacfd03","name":"shot-flip-icon","type":"png"});
 }, "sharknando/images/shot-flip-icon.png");
+__d(647 /* sharknando/src/components/imageChoosen.js */, function(global, require, module, exports) {var _react=require(12 /* react */);var _react2=babelHelpers.interopRequireDefault(_react);
+var _reactNative=require(43 /* react-native */);
+
+
+
+
+
+
+
+
+var _log=require(639 /* ../helpers/log */);var _log2=babelHelpers.interopRequireDefault(_log);
+var _config=require(645 /* ../globals/config */);var _Dimensions$get=
+
+_reactNative.Dimensions.get('window');var width=_Dimensions$get.width;var height=_Dimensions$get.height;var
+
+ImageChoosen=function(_Component){babelHelpers.inherits(ImageChoosen,_Component);
+function ImageChoosen(props){babelHelpers.classCallCheck(this,ImageChoosen);var _this=babelHelpers.possibleConstructorReturn(this,Object.getPrototypeOf(ImageChoosen).call(this,
+props));
+_this.state={
+hasImageSelected:false,
+imageSelected:""};return _this;
+
+}babelHelpers.createClass(ImageChoosen,[{key:'onCancel',value:function onCancel()
+
+{
+return this.props.onCancel();
+}},{key:'onSubmit',value:function onSubmit()
+
+{
+return this.props.onSubmit();
+}},{key:'render',value:function render()
+
+{
+return(
+_react2.default.createElement(_reactNative.View,{style:styles.container},
+_react2.default.createElement(_reactNative.Image,{style:styles.choosenImage,source:this.props.image}),
+_react2.default.createElement(_reactNative.View,{style:styles.header},
+_react2.default.createElement(_reactNative.StatusBar,{barStyle:'light-content'}),
+_react2.default.createElement(_reactNative.TouchableHighlight,{style:styles.cancel,onPress:this.onCancel.bind(this)},
+_react2.default.createElement(_reactNative.Image,{style:styles.cancelIcon,source:require(648 /* ../../images/cancel.png */)})),
+
+_react2.default.createElement(_reactNative.TouchableHighlight,{style:styles.check,onPress:this.onSubmit.bind(this)},
+_react2.default.createElement(_reactNative.Image,{style:styles.checkIcon,source:require(649 /* ../../images/check.png */)})))));
+
+
+
+
+}}]);return ImageChoosen;}(_react.Component);
+
+
+var styles=_reactNative.StyleSheet.create({
+container:{
+flex:1,
+alignItems:'stretch'},
+
+choosenImage:{
+flex:1},
+
+header:{
+position:'absolute',
+left:0,
+top:0,
+backgroundColor:'rgba(0,0,0,.25)',
+width:width,
+height:_config.Style.headerHeight,
+flexDirection:'row'},
+
+cancel:{
+height:_config.Style.headerHeight,
+width:75,
+backgroundColor:'red',
+position:'absolute',
+left:0,
+top:0},
+
+check:{
+height:_config.Style.headerHeight,
+width:75,
+backgroundColor:'blue',
+position:'absolute',
+right:0,
+top:0},
+
+cancelIcon:{
+marginTop:25,
+marginRight:25,
+marginLeft:25},
+
+checkIcon:{
+marginTop:25,
+marginRight:25,
+marginLeft:25}});
+
+
+
+module.exports=ImageChoosen;
+}, "sharknando/src/components/imageChoosen.js");
+__d(648 /* sharknando/images/cancel.png */, function(global, require, module, exports) {module.exports = require(161 /* react-native/Libraries/Image/AssetRegistry */).registerAsset({"__packager_asset":true,"fileSystemLocation":"/Users/patobeltran/workspace/mobile/sharknando/images","httpServerLocation":"/assets/images","width":26,"height":26,"scales":[1,2,3],"files":["/Users/patobeltran/workspace/mobile/sharknando/images/cancel.png","/Users/patobeltran/workspace/mobile/sharknando/images/cancel@2x.png","/Users/patobeltran/workspace/mobile/sharknando/images/cancel@3x.png"],"hash":"068ca01ef532b72153c2bd1210fb9053","name":"cancel","type":"png"});
+}, "sharknando/images/cancel.png");
+__d(649 /* sharknando/images/check.png */, function(global, require, module, exports) {module.exports = require(161 /* react-native/Libraries/Image/AssetRegistry */).registerAsset({"__packager_asset":true,"fileSystemLocation":"/Users/patobeltran/workspace/mobile/sharknando/images","httpServerLocation":"/assets/images","width":31,"height":22,"scales":[1,2,3],"files":["/Users/patobeltran/workspace/mobile/sharknando/images/check.png","/Users/patobeltran/workspace/mobile/sharknando/images/check@2x.png","/Users/patobeltran/workspace/mobile/sharknando/images/check@3x.png"],"hash":"ed5a6897b795d4c507ec124f55192257","name":"check","type":"png"});
+}, "sharknando/images/check.png");
 ;require(187);
 ;require(0);
 //# sourceMappingURL=index.ios.map

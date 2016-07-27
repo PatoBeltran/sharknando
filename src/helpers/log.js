@@ -1,8 +1,10 @@
-export class Log {
+class Log {
     static logMessage(message) {
-        process.stdout.write("[Shark] " + message + "\n");
-    }
+        console.log("[Shark] " + message);
+    };
     static logError(message) {
-        process.stderr.write("[Error] " + message + "\n");
-    }
-}
+        console.error("[Error] " + message);
+    };
+};
+
+module.exports = Log;

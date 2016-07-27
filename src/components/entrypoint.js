@@ -6,8 +6,7 @@ import {
     Text,
     TouchableHighlight,
     View,
-    StatusBar,
-    Image
+    StatusBar
 } from 'react-native';
 
 import Camera from 'react-native-camera';
@@ -15,6 +14,7 @@ import ImagePicker from 'react-native-image-picker';
 import Log from "../helpers/log"
 import GalleryButton from './galleryButton';
 import RotateCamera from './rotateCamera';
+import ImageChoosen from './imageChoosen';
 import {Style} from '../globals/config';
 
 var { width, height } = Dimensions.get('window');
@@ -32,7 +32,7 @@ class SharknandoEntrypoint extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            showCameraRoll: false,
+            hasImageSelected: false,
             imageSelected: ""
         };
     }
@@ -46,12 +46,7 @@ class SharknandoEntrypoint extends Component {
                 Log.logError(err));
     }
 
-    getSelectedImages(images, current) {
-
-    }
-
     rotateCamera() {
-
     }
 
     showCameraRoll() {
@@ -64,23 +59,32 @@ class SharknandoEntrypoint extends Component {
             }
             else {
                 var source = { uri: 'data:image/jpeg;base64,' + response.data, isStatic: true };
-
+                Log.logMessage(source);
                 this.setState({
-                    imageSelected: source
+                    imageSelected: source,
+                    hasImageSelected: true
                 });
-            });
+            }
+        });
+    }
+
+    imageSubmitted() {
+
+    }
+
+    imageCanceled() {
+        this.setState({
+            imageSelected: "",
+            hasImageSelected: false
+        });
     }
 
     render() {
-        const mainScreen = this.state.showCameraRoll ?
-            <CameraRollPicker
-                groupTypes='All'
-                maximum={1}
-                selected={this.state.selected}
-                assetType='Photos'
-                imagesPerRow={3}
-                imageMargin={5}
-                callback={this.getSelectedImages.bind(this) } />
+        const mainScreen = this.state.hasImageSelected ?
+            <ImageChoosen
+                image={this.state.imageSelected}
+                onCancel={this.imageCanceled.bind(this) }
+                onSubmit={this.imageSubmitted.bind(this) } />
             :
             <View style={ styles.container }>
                 <Camera
@@ -127,7 +131,7 @@ const styles = StyleSheet.create({
         top: 0,
         backgroundColor: 'rgba(0,0,0,.25)',
         width: width,
-        height: 65,
+        height: Style.headerHeight,
         flexDirection: 'row'
     },
     footer: {
@@ -135,7 +139,7 @@ const styles = StyleSheet.create({
         left: 0,
         bottom: 0,
         width: width,
-        height: 100,
+        height: Style.footerHeight,
         alignItems: 'center',
         flexDirection: 'row',
     },
