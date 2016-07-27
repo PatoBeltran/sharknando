@@ -78144,15 +78144,29 @@ var _reactNative=require(43 /* react-native */);
 
 
 var _reactNativeCamera=require(633 /* react-native-camera */);var _reactNativeCamera2=babelHelpers.interopRequireDefault(_reactNativeCamera);
-var _reactNativeCameraRollPicker=require(634 /* react-native-camera-roll-picker */);var _reactNativeCameraRollPicker2=babelHelpers.interopRequireDefault(_reactNativeCameraRollPicker);
+var _reactNativeImagePicker=require(646 /* react-native-image-picker */);var _reactNativeImagePicker2=babelHelpers.interopRequireDefault(_reactNativeImagePicker);
 var _log=require(639 /* ../helpers/log */);var _log2=babelHelpers.interopRequireDefault(_log);
 var _galleryButton=require(643 /* ./galleryButton */);var _galleryButton2=babelHelpers.interopRequireDefault(_galleryButton);
 var _rotateCamera=require(644 /* ./rotateCamera */);var _rotateCamera2=babelHelpers.interopRequireDefault(_rotateCamera);
 var _config=require(645 /* ../globals/config */);var _Dimensions$get=
 
-_reactNative.Dimensions.get('window');var width=_Dimensions$get.width;var height=_Dimensions$get.height;var
+_reactNative.Dimensions.get('window');var width=_Dimensions$get.width;var height=_Dimensions$get.height;
 
-SharknandoEntrypoint=function(_Component){babelHelpers.inherits(SharknandoEntrypoint,_Component);function SharknandoEntrypoint(){babelHelpers.classCallCheck(this,SharknandoEntrypoint);return babelHelpers.possibleConstructorReturn(this,Object.getPrototypeOf(SharknandoEntrypoint).apply(this,arguments));}babelHelpers.createClass(SharknandoEntrypoint,[{key:'takePicture',value:function takePicture()
+var options={
+quality:1.0,
+maxWidth:500,
+maxHeight:500,
+storageOptions:{
+skipBackup:true}};var
+
+
+
+SharknandoEntrypoint=function(_Component){babelHelpers.inherits(SharknandoEntrypoint,_Component);
+function SharknandoEntrypoint(props){babelHelpers.classCallCheck(this,SharknandoEntrypoint);var _this=babelHelpers.possibleConstructorReturn(this,Object.getPrototypeOf(SharknandoEntrypoint).call(this,
+props));
+_this.state={showCameraRoll:false};return _this;
+}babelHelpers.createClass(SharknandoEntrypoint,[{key:'takePicture',value:function takePicture()
+
 {
 this.camera.capture().
 then(function(data){
@@ -78168,10 +78182,26 @@ images,current){
 
 {
 
+}},{key:'showCameraRoll',value:function showCameraRoll()
+
+{
+
+_reactNativeImagePicker2.default.launchImageLibrary(options,function(response){
+
+});
 }},{key:'render',value:function render()
 
 {var _this2=this;
-return(
+var mainScreen=this.state.showCameraRoll?
+_react2.default.createElement(CameraRollPicker,{
+groupTypes:'All',
+maximum:1,
+selected:this.state.selected,
+assetType:'Photos',
+imagesPerRow:3,
+imageMargin:5,
+callback:this.getSelectedImages.bind(this)}):
+
 _react2.default.createElement(_reactNative.View,{style:styles.container},
 _react2.default.createElement(_reactNativeCamera2.default,{
 ref:function ref(cam){_this2.camera=cam;},
@@ -78183,18 +78213,18 @@ _react2.default.createElement(_rotateCamera2.default,{callback:this.rotateCamera
 
 _react2.default.createElement(_reactNative.View,{style:styles.footer},
 _react2.default.createElement(_reactNative.View,{style:styles.gallery},
-_react2.default.createElement(_galleryButton2.default,null)),
+_react2.default.createElement(_galleryButton2.default,{callback:this.showCameraRoll.bind(this)})),
 
 _react2.default.createElement(_reactNative.View,{style:styles.shutter},
 _react2.default.createElement(_reactNative.View,{style:styles.capture,onPress:this.takePicture.bind(this)},
 _react2.default.createElement(_reactNative.View,{style:styles.innerCapture}))),
 
 
-_react2.default.createElement(_reactNative.View,{style:styles.more}))));
+_react2.default.createElement(_reactNative.View,{style:styles.more})));
 
 
 
-
+return mainScreen;
 }}]);return SharknandoEntrypoint;}(_react.Component);
 
 
@@ -78497,604 +78527,29 @@ var RCTCamera=(0,_reactNative.requireNativeComponent)('RCTCamera',Camera);
 var styles=_reactNative.StyleSheet.create({
 base:{}});
 }, "react-native-camera/index.js");
-__d(634 /* react-native-camera-roll-picker/index.js */, function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});var _react=require(12 /* react */);var _react2=babelHelpers.interopRequireDefault(_react);
-var _reactNative=require(43 /* react-native */);
+__d(646 /* react-native-image-picker/index.js */, function(global, require, module, exports) {'use strict';var _require=
+
+require(43 /* react-native */);var NativeModules=_require.NativeModules;var
+ImagePickerManager=NativeModules.ImagePickerManager;
+var DEFAULT_OPTIONS={
+title:'Select a Photo',
+cancelButtonTitle:'Cancel',
+takePhotoButtonTitle:'Take Photo…',
+chooseFromLibraryButtonTitle:'Choose from Library…',
+quality:1.0,
+allowsEditing:false};
 
 
-
-
-
-
-
-
-
-
-
-
-var _reactNativeSglistview=require(635 /* react-native-sglistview */);var _reactNativeSglistview2=babelHelpers.interopRequireDefault(_reactNativeSglistview);var
-
-CameraRollPicker=function(_Component){babelHelpers.inherits(CameraRollPicker,_Component);
-function CameraRollPicker(props){babelHelpers.classCallCheck(this,CameraRollPicker);var _this=babelHelpers.possibleConstructorReturn(this,Object.getPrototypeOf(CameraRollPicker).call(this,
-props));
-
-_this.state={
-images:[],
-selected:_this.props.selected,
-lastCursor:null,
-loadingMore:false,
-noMore:false,
-dataSource:new _reactNative.ListView.DataSource({rowHasChanged:function rowHasChanged(r1,r2){return r1!==r2;}})};return _this;
-
-}babelHelpers.createClass(CameraRollPicker,[{key:'componentWillMount',value:function componentWillMount()
-
-{var _Dimensions$get=
-_reactNative.Dimensions.get('window');var width=_Dimensions$get.width;var _props=
-this.props;var imageMargin=_props.imageMargin;var imagesPerRow=_props.imagesPerRow;
-
-this._imageSize=(width-(imagesPerRow+1)*imageMargin)/imagesPerRow;
-
-this.fetch();
-}},{key:'componentWillReceiveProps',value:function componentWillReceiveProps(
-
-nextProps){
-this.setState({
-selected:nextProps.selected});
-
-}},{key:'fetch',value:function fetch()
-
-{var _this2=this;
-if(!this.state.loadingMore){
-this.setState({loadingMore:true},function(){_this2._fetch();});
+module.exports=babelHelpers.extends({},
+ImagePickerManager,{
+showImagePicker:function showImagePicker(options,callback){
+if(typeof options==='function'){
+callback=options;
+options={};
 }
-}},{key:'_fetch',value:function _fetch()
-
-{var _this3=this;var _props2=
-this.props;var groupTypes=_props2.groupTypes;var assetType=_props2.assetType;
-
-var fetchParams={
-first:1000,
-groupTypes:groupTypes,
-assetType:assetType};
-
-
-if(_reactNative.Platform.OS==="android"){
-
-delete fetchParams.groupTypes;
-}
-
-if(this.state.lastCursor){
-fetchParams.after=this.state.lastCursor;
-}
-
-_reactNative.CameraRoll.getPhotos(fetchParams).
-then(function(data){return _this3._appendImages(data);},function(e){return console.log(e);});
-}},{key:'_appendImages',value:function _appendImages(
-
-data){
-var assets=data.edges;
-var newState={
-loadingMore:false};
-
-
-if(!data.page_info.has_next_page){
-newState.noMore=true;
-}
-
-if(assets.length>0){
-newState.lastCursor=data.page_info.end_cursor;
-newState.images=this.state.images.concat(assets);
-newState.dataSource=this.state.dataSource.cloneWithRows(
-this._nEveryRow(newState.images,this.props.imagesPerRow));
-
-}
-
-this.setState(newState);
-}},{key:'render',value:function render()
-
-{var _this4=this;var _props3=
-this.props;var imageMargin=_props3.imageMargin;var backgroundColor=_props3.backgroundColor;
-return(
-_react2.default.createElement(_reactNative.View,{
-style:[styles.wrapper,{padding:imageMargin,paddingRight:0,backgroundColor:backgroundColor}]},
-_react2.default.createElement(_reactNativeSglistview2.default,{
-style:{flex:1},
-renderFooter:this._renderFooterSpinner.bind(this),
-onEndReached:this._onEndReached.bind(this),
-dataSource:this.state.dataSource,
-renderRow:function renderRow(rowData){return _this4._renderRow(rowData);}})));
-
-
-}},{key:'_renderImage',value:function _renderImage(
-
-item){var _this5=this;var _props4=
-this.props;var selectedMarker=_props4.selectedMarker;var imageMargin=_props4.imageMargin;
-
-var marker=selectedMarker?selectedMarker:
-_react2.default.createElement(_reactNative.Image,{
-style:[styles.marker,{width:25,height:25,right:imageMargin+5}],
-source:require(638 /* ./circle-check.png */)});
-
-
-return(
-_react2.default.createElement(_reactNative.TouchableOpacity,{
-key:item.node.image.uri,
-style:{marginBottom:imageMargin,marginRight:imageMargin},
-onPress:function onPress(event){return _this5._selectImage(item.node.image);}},
-_react2.default.createElement(_reactNative.Image,{
-source:{uri:item.node.image.uri},
-style:{height:this._imageSize,width:this._imageSize}},
-this._arrayObjectIndexOf(this.state.selected,'uri',item.node.image.uri)>=0?marker:null)));
-
-
-
-}},{key:'_renderRow',value:function _renderRow(
-
-rowData){var _this6=this;
-var items=rowData.map(function(item){
-if(item===null){
-return null;
-}
-return _this6._renderImage(item);
-});
-
-return(
-_react2.default.createElement(_reactNative.View,{style:styles.row},
-items));
-
-
-}},{key:'_renderFooterSpinner',value:function _renderFooterSpinner()
-
-{
-if(!this.state.noMore){
-return _react2.default.createElement(_reactNative.ActivityIndicator,{style:styles.spinner});
-}
-return null;
-}},{key:'_onEndReached',value:function _onEndReached()
-
-{
-if(!this.state.noMore){
-this.fetch();
-}
-}},{key:'_selectImage',value:function _selectImage(
-
-image){var _props5=
-this.props;var maximum=_props5.maximum;var imagesPerRow=_props5.imagesPerRow;var callback=_props5.callback;
-
-var selected=this.state.selected,
-index=this._arrayObjectIndexOf(selected,'uri',image.uri);
-
-if(index>=0){
-selected.splice(index,1);
-}else{
-if(selected.length<maximum){
-selected.push(image);
-}
-}
-
-this.setState({
-selected:selected,
-dataSource:this.state.dataSource.cloneWithRows(
-this._nEveryRow(this.state.images,imagesPerRow))});
-
-
-
-callback(this.state.selected,image);
-}},{key:'_nEveryRow',value:function _nEveryRow(
-
-data,n){
-var result=[],
-temp=[];
-
-for(var i=0;i<data.length;++i){
-if(i>0&&i%n===0){
-result.push(temp);
-temp=[];
-}
-temp.push(data[i]);
-}
-
-if(temp.length>0){
-while(temp.length!==n){
-temp.push(null);
-}
-result.push(temp);
-}
-
-return result;
-}},{key:'_arrayObjectIndexOf',value:function _arrayObjectIndexOf(
-
-array,property,value){
-return array.map(function(o){return o[property];}).indexOf(value);
-}}]);return CameraRollPicker;}(_react.Component);
-
-
-
-var styles=_reactNative.StyleSheet.create({
-wrapper:{
-flex:1},
-
-row:{
-flexDirection:'row',
-flex:1},
-
-marker:{
-position:'absolute',
-top:5,
-backgroundColor:'transparent'}});
-
-
-
-CameraRollPicker.propTypes={
-groupTypes:_react2.default.PropTypes.oneOf([
-'Album',
-'All',
-'Event',
-'Faces',
-'Library',
-'PhotoStream',
-'SavedPhotos']),
-
-maximum:_react2.default.PropTypes.number,
-assetType:_react2.default.PropTypes.oneOf([
-'Photos',
-'Videos',
-'All']),
-
-imagesPerRow:_react2.default.PropTypes.number,
-imageMargin:_react2.default.PropTypes.number,
-callback:_react2.default.PropTypes.func,
-selected:_react2.default.PropTypes.array,
-selectedMarker:_react2.default.PropTypes.element,
-backgroundColor:_react2.default.PropTypes.string};
-
-
-CameraRollPicker.defaultProps={
-groupTypes:'SavedPhotos',
-maximum:15,
-imagesPerRow:3,
-imageMargin:5,
-assetType:'Photos',
-backgroundColor:'white',
-selected:[],
-callback:function callback(selectedImages,currentImage){
-console.log(currentImage);
-console.log(selectedImages);
-}};exports.default=
-
-
-CameraRollPicker;
-}, "react-native-camera-roll-picker/index.js");
-__d(635 /* react-native-sglistview/lib/index.js */, function(global, require, module, exports) {var _SGListView=require(636 /* ./SGListView */);var _SGListView2=babelHelpers.interopRequireDefault(_SGListView);
-
-module.exports=_SGListView2.default;
-}, "react-native-sglistview/lib/index.js");
-__d(636 /* react-native-sglistview/lib/SGListView.js */, function(global, require, module, exports) {var _react=require(12 /* react */);var _react2=babelHelpers.interopRequireDefault(_react);
-var _reactNative=require(43 /* react-native */);
-var _SGListViewCell=require(637 /* ./SGListViewCell */);var _SGListViewCell2=babelHelpers.interopRequireDefault(_SGListViewCell);
-
-
-
-
-
-
-
-
-var PrivateMethods={
-captureReferenceFor:function captureReferenceFor(cellData,sectionId,rowId,row){
-if(cellData[sectionId]===undefined){
-cellData[sectionId]={};
-}
-
-cellData[sectionId][rowId]=row;
-},
-
-
-
-
-updateCellsVisibility:function updateCellsVisibility(cellData,changedRows){
-for(var section in changedRows){
-if(changedRows.hasOwnProperty(section)){
-var currentSection=changedRows[section];
-
-for(var row in currentSection){
-if(currentSection.hasOwnProperty(row)){
-var currentCell=cellData[section][row];
-var currentCellVisibility=currentSection[row];
-
-
-if(currentCell&&currentCell.setVisibility){
-currentCell.setVisibility(currentCellVisibility);
-}
-}
-}
-}
-}
-},
-
-
-
-
-
-updateCellsPremptively:function updateCellsPremptively(props,cellData,visibleRows){
-if(!props.premptiveLoading){
-return;
-}
-
-if(!cellData.premptiveLoadedCells){
-cellData.premptiveLoadedCells=[];
-}
-
-
-var firstVisibleRow=void 0;
-var lastVisibleRow=void 0;
-var firstVisibleSection=void 0;
-var lastVisibleSection=void 0;
-
-for(var section in visibleRows){
-if(visibleRows.hasOwnProperty(section)){
-for(var row in visibleRows[section]){
-if(firstVisibleRow===undefined){
-firstVisibleSection=section;
-firstVisibleRow=Number(row);
-}else{
-lastVisibleSection=section;
-lastVisibleRow=Number(row);
-}
-
-
-
-
-var currentCell=cellData[section][row];
-if(cellData.premptiveLoadedCells){
-var i=cellData.premptiveLoadedCells.indexOf(currentCell);
-if(i>=0){
-cellData.premptiveLoadedCells.splice(i,1);
-}
-}
-}
-}
-}
-
-
-var isScrollingUp=cellData.firstVisibleRow>firstVisibleRow;
-var isScrollingDown=cellData.lastVisibleRow<lastVisibleRow;
-
-var scrollDirectionChanged=void 0;
-if(isScrollingUp&&cellData.lastScrollDirection==='down'){
-scrollDirectionChanged=true;
-}else if(isScrollingDown&&cellData.lastScrollDirection==='up'){
-scrollDirectionChanged=true;
-}
-
-
-if(scrollDirectionChanged){
-var cell=cellData.premptiveLoadedCells.pop();
-
-while(cell!=undefined){
-cell.setVisibility(false);
-cell=cellData.premptiveLoadedCells.pop();
-}
-}
-
-
-for(var _i=1;_i<=props.premptiveLoading;_i++){
-var _cell=void 0;
-
-if(isScrollingUp){
-_cell=cellData[firstVisibleSection][firstVisibleRow-_i];
-}else if(isScrollingDown){
-_cell=cellData[lastVisibleSection][lastVisibleRow+_i];
-}
-
-if(_cell){
-_cell.setVisibility(true);
-cellData.premptiveLoadedCells.push(_cell);
-}else{
-break;
-}
-}
-
-cellData.firstVisibleRow=firstVisibleRow;
-cellData.lastVisibleRow=lastVisibleRow;
-
-if(isScrollingUp){
-cellData.lastScrollDirection='up';
-}else if(isScrollingDown){
-cellData.lastScrollDirection='down';
-}
-}};
-
-
-
-var SGListView=_react2.default.createClass({displayName:'SGListView',
-
-
-
-
-
-propTypes:babelHelpers.extends({},
-
-_reactNative.ListView.propTypes,{
-
-
-
-
-
-
-
-
-
-renderScrollComponent:_react2.default.PropTypes.func,
-
-
-
-
-premptiveLoading:_react.PropTypes.number}),
-
-
-getDefaultProps:function getDefaultProps(){
-return{
-premptiveLoading:2};
-
-},
-
-
-
-
-
-componentWillMount:function componentWillMount(){
-
-
-
-this.cellData={
-lastVisibleRow:0};
-
-},
-
-onChangeVisibleRows:function onChangeVisibleRows(visibleRows,changedRows){
-
-PrivateMethods.updateCellsVisibility(this.cellData,changedRows);
-
-
-PrivateMethods.updateCellsPremptively(this.props,this.cellData,visibleRows);
-
-
-if(this.props.onChangeVisibleRows){
-this.props.onChangeVisibleRows(visibleRows,changedRows);
-}
-},
-
-getNativeListView:function getNativeListView(){
-return this.refs.nativeListView;
-},
-
-
-getScrollResponder:function getScrollResponder(){
-return this.refs.nativeListView.getScrollResponder();
-},
-
-
-
-
-
-renderScrollComponent:function renderScrollComponent(props){
-var component=void 0;
-
-if(props.renderScrollComponent){
-component=props.renderScrollComponent(props);
-}else{
-component=
-_react2.default.createElement(_reactNative.ScrollView,props);
-
-}
-
-return component;
-},
-
-renderRow:function renderRow(rowData,sectionID,rowID){var _this=this;
-
-var view=this.props.renderRow(rowData,sectionID,rowID);
-
-
-return(
-_react2.default.createElement(_SGListViewCell2.default,{
-usersView:view,
-ref:function ref(row){
-
-
-PrivateMethods.captureReferenceFor(_this.cellData,sectionID,rowID,row);
-}}));
-
-},
-
-render:function render(){
-return(
-_react2.default.createElement(_reactNative.ListView,babelHelpers.extends({},
-this.props,{
-ref:'nativeListView',
-renderScrollComponent:this.renderScrollComponent,
-renderRow:this.renderRow,
-onChangeVisibleRows:this.onChangeVisibleRows})));
-
+return ImagePickerManager.showImagePicker(babelHelpers.extends({},DEFAULT_OPTIONS,options),callback);
 }});
-
-
-module.exports=SGListView;
-}, "react-native-sglistview/lib/SGListView.js");
-__d(637 /* react-native-sglistview/lib/SGListViewCell.js */, function(global, require, module, exports) {var _react=require(12 /* react */);var _react2=babelHelpers.interopRequireDefault(_react);
-var _reactNative=require(43 /* react-native */);
-
-var SGListViewCell=_react2.default.createClass({displayName:'SGListViewCell',
-
-
-
-
-
-propTypes:{
-
-
-
-usersView:_react.PropTypes.element.isRequired},
-
-
-getInitialState:function getInitialState(){
-return{
-visibility:true};
-
-},
-
-
-
-
-componentDidMount:function componentDidMount(){
-
-
-this.viewProperties={
-width:0,
-height:0};
-
-},
-
-onLayout:function onLayout(evt){
-
-this.viewProperties.width=evt.nativeEvent.layout.width;
-this.viewProperties.height=evt.nativeEvent.layout.height;
-},
-
-
-
-
-setVisibility:function setVisibility(visibility){
-if(this.state.visibility==visibility){
-return;
-}
-
-if(visibility==true){
-this.setState({visibility:true});
-}else{
-this.setState({visibility:false});
-}
-},
-
-render:function render(){
-if(this.state.visibility===false){
-return(
-_react2.default.createElement(_reactNative.View,{style:{width:this.viewProperties.width,height:this.viewProperties.height}}));
-
-}
-
-return(
-_react2.default.createElement(_reactNative.View,{onLayout:this.onLayout},
-this.props.usersView));
-
-
-}});
-
-
-module.exports=SGListViewCell;
-}, "react-native-sglistview/lib/SGListViewCell.js");
-__d(638 /* react-native-camera-roll-picker/circle-check.png */, function(global, require, module, exports) {module.exports = require(161 /* react-native/Libraries/Image/AssetRegistry */).registerAsset({"__packager_asset":true,"fileSystemLocation":"/Users/patobeltran/workspace/mobile/sharknando/node_modules/react-native-camera-roll-picker","httpServerLocation":"/assets/node_modules/react-native-camera-roll-picker","width":100,"height":100,"scales":[1],"files":["/Users/patobeltran/workspace/mobile/sharknando/node_modules/react-native-camera-roll-picker/circle-check.png"],"hash":"1aed4cf085e15b771f4c1954fe6b3f8b","name":"circle-check","type":"png"});
-}, "react-native-camera-roll-picker/circle-check.png");
+}, "react-native-image-picker/index.js");
 __d(639 /* sharknando/src/helpers/log.js */, function(global, require, module, exports) {Object.defineProperty(exports,"__esModule",{value:true});var Log=exports.Log=function(){function Log(){babelHelpers.classCallCheck(this,Log);}babelHelpers.createClass(Log,null,[{key:"logMessage",value:function logMessage(
 message){
 process.stdout.write("[Shark] "+message+"\n");
@@ -79116,13 +78571,15 @@ var _config=require(645 /* ../globals/config */);var
 GalleryButton=function(_Component){babelHelpers.inherits(GalleryButton,_Component);function GalleryButton(){babelHelpers.classCallCheck(this,GalleryButton);return babelHelpers.possibleConstructorReturn(this,Object.getPrototypeOf(GalleryButton).apply(this,arguments));}babelHelpers.createClass(GalleryButton,[{key:'render',value:function render()
 {
 return(
+_react2.default.createElement(_reactNative.TouchableHighlight,{onPress:this.props.callback},
 _react2.default.createElement(_reactNative.View,{style:styles.container},
 _react2.default.createElement(_reactNative.View,{style:styles.hexagon},
 _react2.default.createElement(_reactNative.View,{style:styles.hexagonInner}),
 _react2.default.createElement(_reactNative.View,{style:styles.hexagonBefore}),
 _react2.default.createElement(_reactNative.View,{style:styles.hexagonAfter})),
 
-_react2.default.createElement(_reactNative.Image,{style:styles.cameraRollInner,source:require(642 /* ../../images/camera-roll.png */)})));
+_react2.default.createElement(_reactNative.Image,{style:styles.cameraRollInner,source:require(642 /* ../../images/camera-roll.png */)}))));
+
 
 
 }}]);return GalleryButton;}(_react.Component);
@@ -79134,22 +78591,21 @@ height:_config.Style.footerHeight,
 flex:1,
 alignItems:'center',
 flexDirection:'row',
-justifyContent:'center',
-backgroundColor:'red'},
+justifyContent:'center'},
 
 cameraRollInner:{
-position:'absolute',
-top:30,
-left:35},
+alignSelf:'center',
+marginLeft:-44},
 
 hexagon:{
+alignSelf:'center',
 width:50,
 height:27.5},
 
 hexagonInner:{
 width:50,
 height:27.5,
-backgroundColor:'rgba(255,255,255,0.6)'},
+backgroundColor:'rgba(0,0,0,0.6)'},
 
 hexagonAfter:{
 position:'absolute',
@@ -79163,7 +78619,7 @@ borderLeftColor:'transparent',
 borderRightWidth:25,
 borderRightColor:'transparent',
 borderTopWidth:12.5,
-borderTopColor:'rgba(255,255,255,0.6)'},
+borderTopColor:'rgba(0,0,0,0.6)'},
 
 hexagonBefore:{
 position:'absolute',
@@ -79177,7 +78633,7 @@ borderLeftColor:'transparent',
 borderRightWidth:25,
 borderRightColor:'transparent',
 borderBottomWidth:12.5,
-borderBottomColor:'rgba(255,255,255,0.6)'}});
+borderBottomColor:'rgba(0,0,0,0.6)'}});
 
 
 

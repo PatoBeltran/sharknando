@@ -22,7 +22,7 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		140ED2AC1D01E1AD002B40FF /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
-		2308185D1D47FA3C0084584F /* libRCTCameraRoll.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 230818531D47FA220084584F /* libRCTCameraRoll.a */; };
+		2308187B1D4880BE0084584F /* libRNImagePicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2308187A1D4880B60084584F /* libRNImagePicker.a */; };
 		230CE5DE1D47212600A86E71 /* libRCTCamera.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 230CE5DD1D47210500A86E71 /* libRCTCamera.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 /* End PBXBuildFile section */
@@ -91,12 +91,12 @@
 			remoteGlobalIDString = 83CBBA2E1A601D0E00E9B192;
 			remoteInfo = React;
 		};
-		230818521D47FA220084584F /* PBXContainerItemProxy */ = {
+		230818791D4880B60084584F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 2308184C1D47FA220084584F /* RCTCameraRoll.xcodeproj */;
+			containerPortal = 230818751D4880B50084584F /* RNImagePicker.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = 58B5115D1A9E6B3D00147676;
-			remoteInfo = RCTCameraRoll;
+			remoteGlobalIDString = 014A3B5C1C6CF33500B6D375;
+			remoteInfo = RNImagePicker;
 		};
 		230CE5DC1D47210500A86E71 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -141,7 +141,7 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = sharknando/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = sharknando/main.m; sourceTree = "<group>"; };
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
-		2308184C1D47FA220084584F /* RCTCameraRoll.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTCameraRoll.xcodeproj; path = "../node_modules/react-native/Libraries/CameraRoll/RCTCameraRoll.xcodeproj"; sourceTree = "<group>"; };
+		230818751D4880B50084584F /* RNImagePicker.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNImagePicker.xcodeproj; path = "../node_modules/react-native-image-picker/ios/RNImagePicker.xcodeproj"; sourceTree = "<group>"; };
 		230CE5D81D47210500A86E71 /* RCTCamera.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTCamera.xcodeproj; path = "../node_modules/react-native-camera/ios/RCTCamera.xcodeproj"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
@@ -160,7 +160,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2308185D1D47FA3C0084584F /* libRCTCameraRoll.a in Frameworks */,
+				2308187B1D4880BE0084584F /* libRNImagePicker.a in Frameworks */,
 				230CE5DE1D47212600A86E71 /* libRCTCamera.a in Frameworks */,
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
 				00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */,
@@ -273,10 +273,10 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		2308184D1D47FA220084584F /* Products */ = {
+		230818761D4880B50084584F /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				230818531D47FA220084584F /* libRCTCameraRoll.a */,
+				2308187A1D4880B60084584F /* libRNImagePicker.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -300,7 +300,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				2308184C1D47FA220084584F /* RCTCameraRoll.xcodeproj */,
+				230818751D4880B50084584F /* RNImagePicker.xcodeproj */,
 				230CE5D81D47210500A86E71 /* RCTCamera.xcodeproj */,
 				146833FF1AC3E56700842450 /* React.xcodeproj */,
 				00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */,
@@ -423,10 +423,6 @@
 					ProjectRef = 230CE5D81D47210500A86E71 /* RCTCamera.xcodeproj */;
 				},
 				{
-					ProductGroup = 2308184D1D47FA220084584F /* Products */;
-					ProjectRef = 2308184C1D47FA220084584F /* RCTCameraRoll.xcodeproj */;
-				},
-				{
 					ProductGroup = 00C302B61ABCB90400DB3ED1 /* Products */;
 					ProjectRef = 00C302B51ABCB90400DB3ED1 /* RCTGeolocation.xcodeproj */;
 				},
@@ -461,6 +457,10 @@
 				{
 					ProductGroup = 146834001AC3E56700842450 /* Products */;
 					ProjectRef = 146833FF1AC3E56700842450 /* React.xcodeproj */;
+				},
+				{
+					ProductGroup = 230818761D4880B50084584F /* Products */;
+					ProjectRef = 230818751D4880B50084584F /* RNImagePicker.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -528,11 +528,11 @@
 			remoteRef = 146834031AC3E56700842450 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		230818531D47FA220084584F /* libRCTCameraRoll.a */ = {
+		2308187A1D4880B60084584F /* libRNImagePicker.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
-			path = libRCTCameraRoll.a;
-			remoteRef = 230818521D47FA220084584F /* PBXContainerItemProxy */;
+			path = libRNImagePicker.a;
+			remoteRef = 230818791D4880B60084584F /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		230CE5DD1D47210500A86E71 /* libRCTCamera.a */ = {

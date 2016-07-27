@@ -11,14 +11,16 @@ import {Style} from '../globals/config';
 class GalleryButton extends Component {
     render() {
         return (
-            <View style={styles.container}>
-                <View style={styles.hexagon}>
-                    <View style={styles.hexagonInner} />
-                    <View style={styles.hexagonBefore} />
-                    <View style={styles.hexagonAfter} />
+            <TouchableHighlight onPress={this.props.callback}>
+                <View style={styles.container}>
+                    <View style={styles.hexagon}>
+                        <View style={styles.hexagonInner} />
+                        <View style={styles.hexagonBefore} />
+                        <View style={styles.hexagonAfter} />
+                    </View>
+                    <Image style={styles.cameraRollInner} source={require('../../images/camera-roll.png') } />
                 </View>
-                <Image style={styles.cameraRollInner} source={require('../../images/camera-roll.png') } />
-            </View>
+            </TouchableHighlight>
         );
     }
 }

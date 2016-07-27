@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 
 import Camera from 'react-native-camera';
-import CameraRollPicker from 'react-native-camera-roll-picker';
+import ImagePicker from 'react-native-image-picker';
 import Log from "../helpers/log"
 import GalleryButton from './galleryButton';
 import RotateCamera from './rotateCamera';
@@ -19,7 +19,24 @@ import {Style} from '../globals/config';
 
 var { width, height } = Dimensions.get('window');
 
+const options = {
+    quality: 1.0,
+    maxWidth: 500,
+    maxHeight: 500,
+    storageOptions: {
+        skipBackup: true
+    }
+};
+
 class SharknandoEntrypoint extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            showCameraRoll: false,
+            imageSelected: ""
+        };
+    }
+
     takePicture() {
         this.camera.capture()
             .then((data) => {
@@ -37,8 +54,34 @@ class SharknandoEntrypoint extends Component {
 
     }
 
+    showCameraRoll() {
+        ImagePicker.launchImageLibrary(options, (response) => {
+            if (response.didCancel) {
+                Log.logError('User cancelled photo picker');
+            }
+            else if (response.error) {
+                Log.logError('ImagePicker Error: ', response.error);
+            }
+            else {
+                var source = { uri: 'data:image/jpeg;base64,' + response.data, isStatic: true };
+
+                this.setState({
+                    imageSelected: source
+                });
+            });
+    }
+
     render() {
-        return (
+        const mainScreen = this.state.showCameraRoll ?
+            <CameraRollPicker
+                groupTypes='All'
+                maximum={1}
+                selected={this.state.selected}
+                assetType='Photos'
+                imagesPerRow={3}
+                imageMargin={5}
+                callback={this.getSelectedImages.bind(this) } />
+            :
             <View style={ styles.container }>
                 <Camera
                     ref={(cam) => { this.camera = cam; } }
@@ -50,7 +93,7 @@ class SharknandoEntrypoint extends Component {
                 </View>
                 <View style={styles.footer}>
                     <View style={styles.gallery}>
-                        <GalleryButton />
+                        <GalleryButton callback={this.showCameraRoll.bind(this) }/>
                     </View>
                     <View style={styles.shutter}>
                         <View style={styles.capture} onPress={this.takePicture.bind(this) }>
@@ -60,8 +103,8 @@ class SharknandoEntrypoint extends Component {
                     <View style={styles.more}>
                     </View>
                 </View>
-            </View>
-        );
+            </View>;
+        return mainScreen;
     }
 }
 
