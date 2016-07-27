@@ -6,7 +6,9 @@ import {
     Text,
     TouchableHighlight,
     View,
-    StatusBar
+    StatusBar,
+    CameraRoll,
+    NativeModules
 } from 'react-native';
 
 import Camera from 'react-native-camera';
@@ -39,12 +41,15 @@ class SharknandoEntrypoint extends Component {
     }
 
     takePicture() {
-        this.camera.capture()
-            .then((data) => {
-                Log.logMessage(data)
+        return this.camera.capture()
+            .then(response => {
+                var source = { uri: 'data:image/jpeg;base64,' + response.data, isStatic: true };
+                this.setState({
+                    imageSelected: source,
+                    hasImageSelected: true
+                });
             })
-            .catch(err =>
-                Log.logError(err));
+            .catch(err => Log.logError(err));
     }
 
     rotateCamera() {
@@ -56,7 +61,7 @@ class SharknandoEntrypoint extends Component {
     showCameraRoll() {
         ImagePicker.launchImageLibrary(options, (response) => {
             if (response.didCancel) {
-                Log.logError('User cancelled photo picker');
+                Log.logMessage('User cancelled photo picker');
             }
             else if (response.error) {
                 Log.logError('ImagePicker Error: ', response.error);
@@ -72,6 +77,13 @@ class SharknandoEntrypoint extends Component {
     }
 
     imageSubmitted() {
+        if (this.state.hasImageSelected) {
+            CameraRoll.saveToCameraRoll(this.state.imageSelected.uri);
+        }
+        this.setState({
+            imageSelected: "",
+            hasImageSelected: false
+        });
     }
 
     imageCanceled() {
@@ -93,19 +105,21 @@ class SharknandoEntrypoint extends Component {
                     ref={(cam) => { this.camera = cam; } }
                     style={styles.cameraPreview}
                     aspect={Camera.constants.Aspect.fill}
-                    type={this.state.cameraType} />
+                    type={this.state.cameraType}
+                    captureTarget={Camera.constants.CaptureTarget.memory}
+                    defaultTouchToFocus />
                 <View style={ styles.header }>
                     <StatusBar barStyle="light-content" />
-                    <RotateCamera callback={this.rotateCamera.bind(this)} />
+                    <RotateCamera callback={this.rotateCamera.bind(this) } />
                 </View>
                 <View style={styles.footer}>
                     <View style={styles.gallery}>
                         <GalleryButton callback={this.showCameraRoll.bind(this) }/>
                     </View>
                     <View style={styles.shutter}>
-                        <View style={styles.capture} onPress={this.takePicture.bind(this) }>
+                        <TouchableHighlight style={styles.capture} onPress={this.takePicture.bind(this) }>
                             <View style={styles.innerCapture}></View>
-                        </View>
+                        </TouchableHighlight>
                     </View>
                     <View style={styles.more}>
                     </View>
