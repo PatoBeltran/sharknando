@@ -1,24 +1,17 @@
-json = {
-    'eventName': "Event",
-    'startTime': "19970714T170000Z",
-    'endTime': "19970715T040000Z",
-    'location' : "mars",
-    'description' : "Lets go to mars"
-};
+//json = {"Name":"Sample Event Name","StartDate":"2017-07-24T23:27:50.631Z","EndDate":"2017-07-24T23:27:50.631Z","Location":"Redmond","Description":"This is the sample description. The event is going to be epic!"};
 
 function createICSFromJson(json){
 	 ics = "BEGIN:VCALENDAR\n" 
 			+ "PRODID:-//Oneweek//NONSGML Pic2Cal//EN\n" 
 			+ "BEGIN:VEVENT\n"
-			+ "UID:" + json.startTime + "-" + Math.random().toString(36).substr(2, 3) + "@microsoft.com\n"
-			+ "DTSTART:" + json.startTime + "\n"
-			+ "DTEND:" + json.endTime + "\n"
-			+ "SUMMARY:" + json.eventName + "\n"
-			+ "DESCRIPTION:" + json.description + "\n"
-			+ "LOCATION:" + json.location + "\n"
+			+ "UID:" + json.StartDate + "-" + Math.random().toString(36).substr(2, 3) + "@microsoft.com\n"
+			+ "DTSTART:" + json.StartDate + "\n"
+			+ "DTEND:" + json.EndDate + "\n"
+			+ "SUMMARY:" + json.Name + "\n"
+			+ "DESCRIPTION:" + json.Description + "\n"
+			+ "LOCATION:" + json.Location + "\n"
 			+ "END:VEVENT\n"
 			+ "END:VCALENDAR\n"
-	console.log(ics);
 	return ics;
 };
 
